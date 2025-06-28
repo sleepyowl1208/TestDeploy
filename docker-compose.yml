@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./client
+    ports:
+      - "5173:3000"           # External 5173 -> internal React server on 3000
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:8080  # 👈 Runs on host, accessed by browser
+
+  backend:
+    build: ./server
+    ports:
+      - "8080:8080"

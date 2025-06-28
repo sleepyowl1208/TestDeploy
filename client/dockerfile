@@ -1,0 +1,16 @@
+# client/Dockerfile
+FROM node:20 AS build
+
+WORKDIR /app
+COPY . .
+RUN npm install
+RUN npm run build
+
+# Serve build using a minimal image
+FROM node:20-slim
+
+WORKDIR /app
+RUN npm install -g serve
+COPY --from=build /app/dist ./dist
+
+CMD ["serve", "-s", "dist", "-l", "3000"]
